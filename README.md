@@ -254,9 +254,12 @@ To clear all data, use browser DevTools → Application → Local Storage → Cl
 ## 🐛 Troubleshooting
 
 ### Camera not working
-- Ensure you're using HTTPS or localhost (required for camera access)
-- Check browser permissions in settings
-- Try a different browser
+- **HTTPS Required**: Browsers require HTTPS for camera access (except localhost). If deploying, ensure your site uses HTTPS.
+- **Browser Permissions**: Check browser settings → Site permissions → Camera
+- **Browser Compatibility**: Try Chrome, Firefox, or Edge (Safari may have stricter requirements)
+- **Console Errors**: Open DevTools (F12) → Console tab to see camera access errors
+- **Development**: Camera works on `localhost` or `127.0.0.1` without HTTPS
+- **Production**: Must use HTTPS (e.g., Vercel, Netlify, GitHub Pages with HTTPS enabled)
 
 ### Timer not counting down
 - Check browser console for errors

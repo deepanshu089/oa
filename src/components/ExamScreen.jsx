@@ -53,6 +53,13 @@ function ExamScreen({ onSubmit }) {
     // Get camera stream
     const candidateData = getCandidateData()
     if (candidateData) {
+      // Check if HTTPS or localhost (required for camera)
+      const isSecure = window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      
+      if (!isSecure) {
+        console.warn('Camera requires HTTPS or localhost. Current protocol:', window.location.protocol)
+      }
+      
       // Check camera permissions first
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ 
@@ -64,13 +71,21 @@ function ExamScreen({ onSubmit }) {
         })
           .then(camStream => {
             setStream(camStream)
-            if (videoRef.current) {
-              videoRef.current.srcObject = camStream
-            }
+            // Use setTimeout to ensure video element is mounted
+            setTimeout(() => {
+              if (videoRef.current) {
+                videoRef.current.srcObject = camStream
+                // Force play
+                videoRef.current.play().catch(err => {
+                  console.warn('Video play failed:', err)
+                })
+              }
+            }, 100)
             // Camera is working - clear any previous denial events
             clearCameraDenialEvents()
           })
           .catch(error => {
+            console.error('Camera access error:', error.name, error.message)
             // Only log if it's a permission denial and not already logged recently
             if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
               const auditLog = JSON.parse(localStorage.getItem('flipkart_oa_audit') || '[]')
@@ -84,6 +99,8 @@ function ExamScreen({ onSubmit }) {
             }
             // For other errors (no device, etc.), don't log as denial
           })
+      } else {
+        console.warn('getUserMedia is not supported in this browser')
       }
     }
 
@@ -342,26 +359,6 @@ function ExamScreen({ onSubmit }) {
           </div>
         </div>
 
-        {/* Camera Preview */}
-        {stream && (
-          <div className="mt-4 mb-4">
-            <div className="text-xs font-semibold text-gray-400 mb-2 flex items-center gap-1">
-              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              Camera Monitoring
-            </div>
-            <div className="w-full rounded-lg overflow-hidden border-2 border-blue-500 shadow-lg ring-2 ring-blue-500/30">
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                muted
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        )}
 
         <button
           onClick={handleManualSubmit}
