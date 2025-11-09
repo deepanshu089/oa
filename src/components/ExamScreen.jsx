@@ -307,10 +307,10 @@ function ExamScreen({ onSubmit }) {
   return (
     <div className="min-h-screen bg-gray-900 flex">
       {/* Sidebar Navigation */}
-      <div className="w-72 bg-gray-800 border-r border-gray-700 p-5 pl-6 flex flex-col">
-        <div className="mb-4">
-          <h2 className="text-lg font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent mb-3">Flipkart</h2>
-          <div className="bg-gradient-to-br from-red-900/50 to-red-800/30 border border-red-600/50 rounded-lg p-3 mb-4 shadow-lg">
+      <div className="w-80 bg-gray-800 border-r border-gray-700 p-6 pl-8 flex flex-col">
+        <div className="mb-6">
+          <h2 className="text-lg font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent mb-4">Flipkart</h2>
+          <div className="bg-gradient-to-br from-red-900/50 to-red-800/30 border border-red-600/50 rounded-lg p-4 mb-4 shadow-lg">
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs font-semibold text-red-300 flex items-center gap-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -325,14 +325,14 @@ function ExamScreen({ onSubmit }) {
           </div>
         </div>
 
-        <div className="mb-4 flex-1 overflow-y-auto pr-2">
-          <h3 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+        <div className="mb-6 flex-1 overflow-y-auto pr-2">
+          <h3 className="text-sm font-semibold text-gray-300 mb-4 flex items-center gap-2">
             <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
             Questions ({questions.length})
           </h3>
-          <div className="grid grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-5 gap-3 ml-4">
             {questions.map(q => {
               const hasAnswer = answers[q.id] && answers[q.id] !== ''
               const isCurrent = q.id === currentQuestion
@@ -342,7 +342,7 @@ function ExamScreen({ onSubmit }) {
                 <button
                   key={q.id}
                   onClick={() => handleQuestionClick(q.id)}
-                  className={`w-9 h-9 rounded-md text-xs font-semibold transition-all ${
+                  className={`w-10 h-10 rounded-md text-xs font-semibold transition-all flex items-center justify-center ${
                     isCurrent
                       ? 'bg-blue-600 text-white ring-2 ring-blue-400 ring-offset-2 ring-offset-gray-800 shadow-lg scale-105'
                       : hasAnswer
